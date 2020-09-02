@@ -2,7 +2,6 @@ const Table = require('cli-table');
 const chalk = require('chalk');
 const { formatCurrency } = require('./formatter');
 const config = require('./config.json');
-var asciichart = require('asciichart')
 const babar = require('babar');
 
 var printTable = function (data) {
@@ -22,9 +21,9 @@ var printTable = function (data) {
         it.localization[config.global.localization],
         formatCurrency(it.market_data.market_cap[config.global.currency]),
         it.market_data.price_change_percentage_24h < 0 ? chalk[config.colors.negative](it.market_data.price_change_percentage_24h) : chalk[config.colors.positive](it.market_data.price_change_percentage_24h),
-        (it.market_data.current_price[config.global.currency]),
-        (it.market_data.high_24h[config.global.currency]),
-        (it.market_data.low_24h[config.global.currency])
+        '$' + (it.market_data.current_price[config.global.currency]),
+        '$' + (it.market_data.high_24h[config.global.currency]),
+        '$' + (it.market_data.low_24h[config.global.currency])
     ]))
     console.log(table.toString())
 }
