@@ -2,5 +2,10 @@
     "global":{
         "localization": "en",
         "currency": "usd"
+    },
+    "colors":{
+        "table_head":"blueBright",
+        "negative":"redBright",
+        "positive":"greenBright"
     }
 }

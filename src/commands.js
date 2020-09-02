@@ -21,8 +21,6 @@ const config = require('./config.json');
 
 const CoinGeckoClient = new CoinGecko();
 
-const HEAD_COLORS = "blueBright"
-
 var global = async (coin) => {
     const data = await CoinGeckoClient.global();
     console.log(data)
@@ -60,19 +58,19 @@ var isResponseSuccess = function (data) {
 var printTable = function (data) {
     const table = new Table({
         head: [
-            chalk[HEAD_COLORS]('Name'),
-         chalk[HEAD_COLORS]('Market Cap'),
-         chalk[HEAD_COLORS]('Price Change'),
-         chalk[HEAD_COLORS]('Current Price'),
-         chalk[HEAD_COLORS]('24h High'),
-         chalk[HEAD_COLORS]('24h Low')
+            chalk[config.colors.table_head]('Name'),
+         chalk[config.colors.table_head]('Market Cap'),
+         chalk[config.colors.table_head]('Price Change'),
+         chalk[config.colors.table_head]('Current Price'),
+         chalk[config.colors.table_head]('24h High'),
+         chalk[config.colors.table_head]('24h Low')
         ]
     });
     data = data.slice(0, 10)
     data.map(it => table.push([
         it.localization[config.global.localization],
         formatCurrency(it.market_data.market_cap[config.global.currency]),
-        it.market_data.price_change_percentage_24h < 0 ?  chalk.redBright(it.market_data.price_change_percentage_24h) : chalk.greenBright(it.market_data.price_change_percentage_24h),
+        it.market_data.price_change_percentage_24h < 0 ?  chalk[config.colors.negative](it.market_data.price_change_percentage_24h) : chalk[config.colors.positive](it.market_data.price_change_percentage_24h),
         (it.market_data.current_price[config.global.currency]),
         (it.market_data.high_24h[config.global.currency]),
         (it.market_data.low_24h[config.global.currency])
