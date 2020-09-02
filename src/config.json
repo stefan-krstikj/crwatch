@@ -1,12 +1,13 @@
 {
-    "global":{
+    "global": {
         "localization": "en",
         "currency": "usd"
     },
-    "colors":{
-        "table_head":"blueBright",
-        "negative":"redBright",
-        "positive":"greenBright",
-        "chart":"blue"
+    "colors": {
+        "table_head": "cyanBright",
+        "table_negative": "redBright",
+        "table_positive": "greenBright",
+        "table_active_coin": "bgWhite",
+        "chart": "blue"
     }
 }
