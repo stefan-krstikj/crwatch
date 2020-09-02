@@ -6,6 +6,7 @@
     "colors":{
         "table_head":"blueBright",
         "negative":"redBright",
-        "positive":"greenBright"
+        "positive":"greenBright",
+        "chart":"blue"
     }
 }

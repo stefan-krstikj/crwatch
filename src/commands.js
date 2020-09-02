@@ -1,46 +1,49 @@
 #!/usr/bin/env node
 const CoinGecko = require('coingecko-api');
-
-const { printTable } = require('./output');
+const { printTable, printChart } = require('./output');
 
 
 
 const CoinGeckoClient = new CoinGecko();
-
-var global = async (coin) => {
-    const data = await CoinGeckoClient.global();
-    console.log(data)
-};
 
 var ping = async () => {
     const data = await CoinGeckoClient.ping();
     console.log(data.data['gecko_says'])
 };
 
-var coinsAll = async () => {
-    let data = await CoinGeckoClient.coins.all();
+var coinsAll = async (n) => {
+    let data = await CoinGeckoClient.coins.all({
+        per_page: n ? n : 10
+    });
+
     if (!_isResponseSuccess(data)) {
-        // error handler
-        consonle.log("Error")
+        console.log(data.data.error)
+        return;
     }
-    data = data.data
-    printTable(data)
+    printTable(data.data)
 };
 
-var coinsList = async () => {
-    const data = await CoinGeckoClient.coins.list();
-    console.log(data)
-};
+var coinsFetch = async (coinId) => {
+    let data = await CoinGeckoClient.coins.fetch(coinId, {});
 
-var coinsMarkets = async () => {
-    const data = await CoinGeckoClient.coins.markets();
-    console.log(data)
-};
+    if (!_isResponseSuccess(data)) {
+        console.log(data.data.error)
+        return;
+    }
+}
+
+var fetchMarketChartRange = async (coinId, days = 1) => {
+    const data = await CoinGeckoClient.coins.fetchMarketChart(coinId, {
+        days: days
+    })
+    printChart(data.data.prices, coinId)
+}
+
 
 var _isResponseSuccess = function (data) {
-    return data.success = "true"
+    return data.success
 }
 
 module.exports = {
-    global, ping, coinsAll, coinsList, coinsMarkets
+    ping, coinsAll, coinsFetch, fetchMarketChartRange
 };
