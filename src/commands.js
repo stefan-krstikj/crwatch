@@ -17,11 +17,10 @@ class Coin {
 const CoinGecko = require('coingecko-api');
 const Table = require('cli-table');
 const chalk = require('chalk');
+const config = require('./config.json');
 
 const CoinGeckoClient = new CoinGecko();
 
-const GLOBAL_LOCALIZATION = 'en'
-const CURRENCY = 'usd'
 const HEAD_COLORS = "blueBright"
 
 var global = async (coin) => {
@@ -71,12 +70,12 @@ var printTable = function (data) {
     });
     data = data.slice(0, 10)
     data.map(it => table.push([
-        it.localization[GLOBAL_LOCALIZATION],
-        formatCurrency(it.market_data.market_cap[CURRENCY]),
+        it.localization[config.global.localization],
+        formatCurrency(it.market_data.market_cap[config.global.currency]),
         it.market_data.price_change_percentage_24h < 0 ?  chalk.redBright(it.market_data.price_change_percentage_24h) : chalk.greenBright(it.market_data.price_change_percentage_24h),
-        (it.market_data.current_price[CURRENCY]),
-        (it.market_data.high_24h[CURRENCY]),
-        (it.market_data.low_24h[CURRENCY])
+        (it.market_data.current_price[config.global.currency]),
+        (it.market_data.high_24h[config.global.currency]),
+        (it.market_data.low_24h[config.global.currency])
     ]))
     console.log(table.toString())
 }
