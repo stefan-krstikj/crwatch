@@ -1,10 +1,10 @@
 const Table = require('cli-table');
 const chalk = require('chalk');
-const { formatCurrency } = require('./formatter');
+const { formatCurrency, roundNumber } = require('./formatter');
 const config = require('./config.json');
 const babar = require('babar');
 
-var printTable = function (data, watch, activeCoin = 0, clear = false) {
+var printTable = function (data, watch, activeCoin = 0, timestamp = '', clearConsole = false) {
     const table = new Table({
         head: [
             chalk[config.colors.table_head]('Name'),
@@ -20,33 +20,42 @@ var printTable = function (data, watch, activeCoin = 0, clear = false) {
         table.push([
             (counter === activeCoin && watch !== undefined) ? chalk[config.colors.table_active_coin].black(it.localization[config.global.localization]) : it.localization[config.global.localization],
             formatCurrency(it.market_data.market_cap[config.global.currency]),
-            it.market_data.price_change_percentage_24h < 0 ? chalk[config.colors.table_negative](it.market_data.price_change_percentage_24h) : chalk[config.colors.table_positive](it.market_data.price_change_percentage_24h),
+            it.market_data.price_change_percentage_24h < 0 ? chalk[config.colors.table_negative](roundNumber(it.market_data.price_change_percentage_24h) + "%"): chalk[config.colors.table_positive](roundNumber(it.market_data.price_change_percentage_24h)  + "%"),
             '$' + (it.market_data.current_price[config.global.currency]),
             '$' + (it.market_data.high_24h[config.global.currency]),
             '$' + (it.market_data.low_24h[config.global.currency])
         ])
         counter++
     })
-    if (watch !== undefined)
-        console.clear()
 
-    printTime()
+    if(clearConsole) console.clear()
+
+    if(timestamp !== ''){
+        console.log('')
+        console.log('Last updated: ' + timestamp)
+    }
     console.log(table.toString())
 }
 
 var printChart = ((data, coinId, watch) => {
-    if(watch !== undefined)
+    if (watch !== undefined)
         console.clear()
     console.log(babar(data, {
         color: config.colors.chart,
         height: 10,
         caption: coinId
     }));
-    if(watch !== undefined)
+    if (watch !== undefined)
         console.log(' ' + chalk[config.colors.table_active_coin].black('Return'))
 })
 
 var printTime = (() => {
+    var timestamp = getTime()
+    console.log('')
+    console.log(chalk.bold(' Last update:'), timestamp)
+})
+
+var getTime = (() => {
     var today = new Date();
     var year = today.getFullYear()
     var month = today.getMonth() < 10 ? '0' + today.getMonth() : today.getMonth()
@@ -54,12 +63,10 @@ var printTime = (() => {
     var hours = today.getHours() < 10 ? '0' + today.getHours() : today.getHours()
     var minutes = today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes()
     var seconds = today.getSeconds() < 10 ? '0' + today.getSeconds() : today.getSeconds()
-    console.log('')
-    var timestamp = year + '-' + month + '-' + day + ' ' + hours + ":" + minutes + ":" + seconds
-    console.log(chalk.bold(' Last update:'), timestamp)
+    return (year + '-' + month + '-' + day + ' ' + hours + ":" + minutes + ":" + seconds)
 })
 
 
 module.exports = {
-    printTable, printChart
+    printTable, printChart, getTime, printTime
 };

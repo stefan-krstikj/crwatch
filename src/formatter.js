@@ -13,6 +13,10 @@ var formatCurrency = function (number) {
     return scaled.toFixed(1) + suffix;
 }
 
+var roundNumber = ((number, decimals = 2) => {
+    return number.toFixed(decimals)
+})
+
 module.exports = {
-    formatCurrency,
+    formatCurrency, roundNumber
 };
