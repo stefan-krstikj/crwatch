@@ -7,30 +7,30 @@ const babar = require('babar');
 var printTable = function (data, watch, activeCoin = 0, timestamp = '', clearConsole = false) {
     const table = new Table({
         head: [
-            chalk[config.colors.table_head]('Name'),
-            chalk[config.colors.table_head]('Market Cap'),
-            chalk[config.colors.table_head]('Price Change'),
-            chalk[config.colors.table_head]('Current Price'),
-            chalk[config.colors.table_head]('24h High'),
-            chalk[config.colors.table_head]('24h Low')
+            chalk.hex(config.colors.table_head_hex)('Name'),
+            chalk.hex(config.colors.table_head_hex)('Market Cap'),
+            chalk.hex(config.colors.table_head_hex)('Price Change'),
+            chalk.hex(config.colors.table_head_hex)('Current Price'),
+            chalk.hex(config.colors.table_head_hex)('24h High'),
+            chalk.hex(config.colors.table_head_hex)('24h Low')
         ]
     });
     var counter = 0;
     data.map(it => {
         table.push([
-            (counter === activeCoin && watch !== undefined) ? chalk[config.colors.table_active_coin].black(it.localization[config.global.localization]) : it.localization[config.global.localization],
-            formatCurrency(it.market_data.market_cap[config.global.currency]),
-            it.market_data.price_change_percentage_24h < 0 ? chalk[config.colors.table_negative](roundNumber(it.market_data.price_change_percentage_24h) + "%"): chalk[config.colors.table_positive](roundNumber(it.market_data.price_change_percentage_24h)  + "%"),
-            '$' + (it.market_data.current_price[config.global.currency]),
-            '$' + (it.market_data.high_24h[config.global.currency]),
-            '$' + (it.market_data.low_24h[config.global.currency])
+            chalk.hex(config.colors.table_row_hex)((counter === activeCoin && watch !== undefined) ? chalk[config.colors.table_active_coin].black(it.localization[config.global.localization]) : it.localization[config.global.localization]),
+            chalk.hex(config.colors.table_row_hex)(formatCurrency(it.market_data.market_cap[config.global.currency])),
+            it.market_data.price_change_percentage_24h < 0 ? chalk.hex(config.colors.table_negative_hex)(roundNumber(it.market_data.price_change_percentage_24h) + "%") : chalk.hex(config.colors.table_positive_hex)(roundNumber(it.market_data.price_change_percentage_24h) + "%"),
+            it.market_data.price_change_percentage_24h < 0 ? chalk.hex(config.colors.table_negative_hex)('$' + (it.market_data.current_price[config.global.currency])) : chalk.hex(config.colors.table_positive_hex)('$' + (it.market_data.current_price[config.global.currency])),
+            chalk.hex(config.colors.table_row_hex)('$' + (it.market_data.high_24h[config.global.currency])),
+            chalk.hex(config.colors.table_row_hex)('$' + (it.market_data.low_24h[config.global.currency]))
         ])
         counter++
     })
 
-    if(clearConsole) console.clear()
+    if (clearConsole) console.clear()
 
-    if(timestamp !== ''){
+    if (timestamp !== '') {
         console.log('')
         console.log('Last updated: ' + timestamp)
     }

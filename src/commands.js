@@ -16,8 +16,8 @@ var ping = async () => {
 
 var coinsAll = (n, watch, activeCoin = 0) => {
     if (watch !== undefined && watch < 30) {
-        // console.error("error: required option '-w, --watch [seconds]' needs to be greater than 30 seconds!")
-        // return
+        console.error("error: required option '-w, --watch [seconds]' needs to be greater than 30 seconds!")
+        return
     }
     getCoins().then(data => {
         if (!_isResponseSuccess(data)) {
@@ -85,19 +85,7 @@ var fetchMarketChartRange = async (coinId, days = 1, watch) => {
         days: days
     })
     printChart(data.data.prices, coinId, watch)
-    if (watch === undefined)
-        process.exit();
-
-    process.stdin.on('keypress', (str, key) => {
-        if (key.ctrl && key.name === 'c') {
-            process.exit();
-        } else {
-            if (key.name == 'return') {
-                process.stdin.removeAllListeners('keypress')
-                coinsAll(10, watch)
-            }
-        }
-    })
+    process.exit();
 }
 
 var _isResponseSuccess = function (data) {
