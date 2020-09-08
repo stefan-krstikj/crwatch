@@ -4,14 +4,16 @@
         "currency": "usd"
     },
     "colors": {
-        "table_head": "yellow",
         "table_head_hex": "#ffcd3c",
-        "table_negative": "redBright",
         "table_negative_hex": "#d92027",
-        "table_positive": "greenBright",
         "table_positive_hex": "#00b8a9",
+        "table_row_hex": "#eeeeee",
         "table_active_coin": "bgWhite",
-        "chart": "blue",
-        "table_row_hex": "#eeeeee"
+        "chart": "blue"
+    },
+    "styles": {
+        "table_head": "",
+        "table_row": "",
+        "table_price": "bold"
     }
 }

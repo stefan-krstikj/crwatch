@@ -3,14 +3,15 @@ const chalk = require('chalk');
 const { formatCurrency, roundNumber } = require('./formatter');
 const config = require('./config.json');
 const babar = require('babar');
+const { bold } = require('chalk');
 
 var printTable = function (data, watch, activeCoin = 0, timestamp = '', clearConsole = false) {
     const table = new Table({
         head: [
             chalk.hex(config.colors.table_head_hex)('Name'),
-            chalk.hex(config.colors.table_head_hex)('Market Cap'),
-            chalk.hex(config.colors.table_head_hex)('Price Change'),
             chalk.hex(config.colors.table_head_hex)('Current Price'),
+            chalk.hex(config.colors.table_head_hex)('Price Change'),
+            chalk.hex(config.colors.table_head_hex)('Market Cap'),
             chalk.hex(config.colors.table_head_hex)('24h High'),
             chalk.hex(config.colors.table_head_hex)('24h Low')
         ]
@@ -19,9 +20,9 @@ var printTable = function (data, watch, activeCoin = 0, timestamp = '', clearCon
     data.map(it => {
         table.push([
             chalk.hex(config.colors.table_row_hex)((counter === activeCoin && watch !== undefined) ? chalk[config.colors.table_active_coin].black(it.localization[config.global.localization]) : it.localization[config.global.localization]),
-            chalk.hex(config.colors.table_row_hex)(formatCurrency(it.market_data.market_cap[config.global.currency])),
+            chalk[config.styles.table_price](it.market_data.price_change_percentage_24h < 0 ? chalk.hex(config.colors.table_negative_hex)('$' + (it.market_data.current_price[config.global.currency])) : chalk.hex(config.colors.table_positive_hex)('$' + (it.market_data.current_price[config.global.currency]))),
             it.market_data.price_change_percentage_24h < 0 ? chalk.hex(config.colors.table_negative_hex)(roundNumber(it.market_data.price_change_percentage_24h) + "%") : chalk.hex(config.colors.table_positive_hex)(roundNumber(it.market_data.price_change_percentage_24h) + "%"),
-            it.market_data.price_change_percentage_24h < 0 ? chalk.hex(config.colors.table_negative_hex)('$' + (it.market_data.current_price[config.global.currency])) : chalk.hex(config.colors.table_positive_hex)('$' + (it.market_data.current_price[config.global.currency])),
+            chalk.hex(config.colors.table_row_hex)(formatCurrency(it.market_data.market_cap[config.global.currency])),
             chalk.hex(config.colors.table_row_hex)('$' + (it.market_data.high_24h[config.global.currency])),
             chalk.hex(config.colors.table_row_hex)('$' + (it.market_data.low_24h[config.global.currency]))
         ])
