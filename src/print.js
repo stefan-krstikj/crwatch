@@ -3,7 +3,6 @@ const chalk = require('chalk');
 const { formatCurrency, roundNumber } = require('./formatter');
 const config = require('./config.json');
 const babar = require('babar');
-const { bold } = require('chalk');
 
 var printTable = function (data, watch, activeCoin = 0, timestamp = '', clearConsole = false) {
     const table = new Table({
@@ -53,7 +52,7 @@ var printChart = ((data, coinId, watch) => {
 var printTime = (() => {
     var timestamp = getTime()
     console.log('')
-    console.log(chalk.bold(' Last update:'), timestamp)
+    console.log(chalk.hex(config.colors.last_update_hex)[config.styles.last_update](' Last update: ') + chalk.hex(config.colors.timestamp_hex)[config.styles.timestamp](timestamp))
 })
 
 var getTime = (() => {

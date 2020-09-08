@@ -9,11 +9,15 @@
         "table_positive_hex": "#00b8a9",
         "table_row_hex": "#eeeeee",
         "table_active_coin": "bgWhite",
-        "chart": "blue"
+        "chart": "blue",
+        "last_update_hex": "#4e89ae",
+        "timestamp_hex": "#fff"
     },
     "styles": {
-        "table_head": "",
-        "table_row": "",
-        "table_price": "bold"
+        "table_head": "visible",
+        "table_row": "visible",
+        "table_price": "bold",
+        "last_update": "bold",
+        "timestamp": "visible"
     }
 }

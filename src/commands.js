@@ -2,8 +2,6 @@
 const CoinGecko = require('coingecko-api');
 const readline = require('readline');
 const { printTable, printChart, getTime, printTime } = require('./print');
-const config = require('./config.json');
-const { callbackify } = require('util');
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 
