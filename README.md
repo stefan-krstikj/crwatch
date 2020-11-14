@@ -1,7 +1,7 @@
 
 # cwatch
 
-`cwatch` is a CLI tool to monitor cryptocurrency prices
+`cwatch` is a CLI tool for displaying live cryptocurrency prices and drawing charts.
 
 ![cwatch](screenshots/cwatch.png)
 
