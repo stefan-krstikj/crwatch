@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const { ping, coinsAll, fetchMarketChartRange } = require('./commands');
+const { ping, getCoins, fetchMarketChartRange } = require('./commands');
 
 program
     .description('List table of coins')
     .option('-t, --top [n]', 'Top n')
     .option('-o, --order', 'Order')
     .option('-w, --watch [timeout]', 'Refresh page every [seconds] seconds (minimum 30)')
-    .action((args) => coinsAll(args.top, args.watch))
+    .action((args) => getCoins(args.top, args.watch))
 
 program
     .command('ping')

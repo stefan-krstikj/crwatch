@@ -4,7 +4,7 @@ const { formatCurrency, roundNumber } = require('./formatter');
 const config = require('./config.json');
 const babar = require('babar');
 
-var printTable = function (data, watch, activeCoin = 0, timestamp = null, clearConsole = false) {
+var printTable = function (data, watch = true, activeCoin = 0, timestamp = null, clearConsole = false) {
     const table = new Table({
         head: [
             chalk.hex(config.colors.table_head_hex)('Name'),
@@ -18,7 +18,7 @@ var printTable = function (data, watch, activeCoin = 0, timestamp = null, clearC
     var counter = 0;
     data.map(it => {
         table.push([
-            chalk.hex(config.colors.table_row_hex)((counter === activeCoin && watch !== undefined) ? chalk[config.colors.table_active_coin].black(it.localization[config.global.localization]) : it.localization[config.global.localization]),
+            chalk.hex(config.colors.table_row_hex)((counter === activeCoin && watch !== false) ? chalk[config.colors.table_active_coin].black(it.localization[config.global.localization]) : it.localization[config.global.localization]),
             chalk[config.styles.table_price](it.market_data.price_change_percentage_24h < 0 ?  "🔻" + chalk.hex(config.colors.table_negative_hex)('$' + (it.market_data.current_price[config.global.currency])) :  "🔺" + chalk.hex(config.colors.table_positive_hex)('$' + (it.market_data.current_price[config.global.currency]))),
             it.market_data.price_change_percentage_24h < 0 ? chalk.hex(config.colors.table_negative_hex)(roundNumber(it.market_data.price_change_percentage_24h) + "%") : chalk.hex(config.colors.table_positive_hex)(roundNumber(it.market_data.price_change_percentage_24h) + "%"),
             chalk.hex(config.colors.table_row_hex)(formatCurrency(it.market_data.market_cap[config.global.currency])),

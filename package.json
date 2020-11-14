@@ -1,7 +1,7 @@
 {
   "name": "cwatch",
   "version": "1.0.0",
-  "description": "",
+  "description": "cwatch is a command-line application for displaying live cryptocurrency prices and drawing charts",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,5 +19,9 @@
   },
   "bin": {
     "cwatch": "./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stefan-krstikj/cwatch.git"
   }
 }

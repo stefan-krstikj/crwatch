@@ -6,38 +6,41 @@ readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 
 const CoinGeckoClient = new CoinGecko();
-var viewingChartData = false
+let viewingChartData = false;
 
-var ping = async () => {
-    const data = await CoinGeckoClient.ping();
-    console.log(data.data['gecko_says'])
-};
+function ping() {
+    _ping()
+        .then(response => console.log(response.code + " " + response.data['gecko_says']))
+        .catch(error => console.log('error', error))
+}
 
-var coinsAll = (n, watch, activeCoin = 0) => {
+function getCoins(n, watch, activeCoin = 0) {
     if (watch !== undefined && watch < 30) {
         console.error("error: required option '-w, --watch [seconds]' needs to be greater than 30 seconds!")
         return
     }
     if (watch !== undefined) {
-        // interactive
-        interactive(n, watch, activeCoin)
+        _printCoinsInteractive(n, watch, activeCoin)
     } else {
-        getCoins(n).then(data => {
-            if (!_isResponseSuccess(data)) {
-                console.log(data.data.error)
-                return;
-            }
-            printTime()
-            printTable(data.data, watch, activeCoin)
-        })
+        _printCoins(n)
     }
-
 }
 
-function interactive(n, watch, activeCoin) {
-    getCoins(n).then(data => {
-        var timestamp = getTime()
-        if(!viewingChartData)
+function _printCoins(n) {
+    _coinsAll(n).then(data => {
+        if (!_isResponseSuccess(data)) {
+            console.log(data.data.error)
+            return;
+        }
+        printTime()
+        printTable(data.data, false)
+    })
+}
+
+function _printCoinsInteractive(n, watch, activeCoin) {
+    _coinsAll(n).then(data => {
+        const timestamp = getTime();
+        if (!viewingChartData)
             printTable(data.data, watch, activeCoin, timestamp, true)
         process.stdin.on('keypress', (str, key) => {
             if (key.ctrl && key.name === 'c') {
@@ -45,33 +48,34 @@ function interactive(n, watch, activeCoin) {
             } else {
                 switch (key.name) {
                     case ('up'):
-                        if(!viewingChartData){
+                        if (!viewingChartData) {
                             if (activeCoin !== 0) activeCoin--;
                             printTable(data.data, watch, activeCoin, timestamp, true)
                         }
                         return
 
                     case ('down'):
-                        if(!viewingChartData){
+                        if (!viewingChartData) {
                             if (!((n !== undefined && activeCoin === n - 1) || (n === undefined && activeCoin === 9))) activeCoin++;
                             printTable(data.data, watch, activeCoin, timestamp, true)
                         }
                         return
 
                     case ('return'):
-                        if(viewingChartData){
+                        if (viewingChartData) {
                             viewingChartData = false
                             printTable(data.data, watch, activeCoin, timestamp, true)
-                        }else{
-                            // process.stdin.removeAllListeners('keypress')
+                        } else {
                             viewingChartData = true
-                            fetchMarketChartRange(data.data[activeCoin].id, 1, watch)
+                            _fetchMarketChartRange(data.data[activeCoin].id, 1)
+                                .then(response =>
+                                    printChart(response.data.prices, data.data[activeCoin].id, watch))
+                                .catch(error => console.log(error))
                         }
                         return
 
                     default:
                         return
-                    // do nothing
                 }
             }
         })
@@ -79,29 +83,31 @@ function interactive(n, watch, activeCoin) {
             setTimeout(resolve, watch * 1000)
         }).then(() => {
             process.stdin.removeAllListeners('keypress')
-            interactive(n, watch, activeCoin)
+            _printCoinsInteractive(n, watch, activeCoin)
         });
     })
 }
 
-var getCoins = async (n = 10) => {
-    let data = await CoinGeckoClient.coins.all({
+async function _coinsAll(n = 10) {
+    return CoinGeckoClient.coins.all({
         per_page: n ? n : 10
     });
-    return data
 }
 
-var fetchMarketChartRange = async (coinId, days = 1, watch) => {
-    const data = await CoinGeckoClient.coins.fetchMarketChart(coinId, {
+async function _fetchMarketChartRange(coinId, days = 1) {
+    return CoinGeckoClient.coins.fetchMarketChart(coinId, {
         days: days
-    })
-    printChart(data.data.prices, coinId, watch)
+    });
 }
 
-var _isResponseSuccess = function (data) {
+async function _ping() {
+    return CoinGeckoClient.ping();
+}
+
+function _isResponseSuccess(data) {
     return data.success
 }
 
 module.exports = {
-    ping, coinsAll, fetchMarketChartRange
+    ping, getCoins, fetchMarketChartRange: _fetchMarketChartRange
 };
