@@ -1,9 +1,9 @@
 
-# cwatch
+# crwatch
 
-`cwatch` is a CLI tool for displaying live cryptocurrency prices and drawing charts.
+`crwatch` is a CLI tool for displaying live cryptocurrency prices and drawing charts.
 
-![cwatch](screenshots/cwatch.png)
+![crwatch](screenshots/cwatch.png)
 
 
 ## Requirements
@@ -28,20 +28,20 @@ You can install nodejs and npm easily with apt install
 
 ## Install
 
-`$ git clone https://github.com/stefan-krstikj/cwatch`
+`$ git clone https://github.com/stefan-krstikj/crwatch`
 
-`$ cd cwatch`
+`$ cd crwatch`
 
 `$ sudo npm install -g`
 
 ## Configure colors
 
-Open `config.json` to edit the colors of the table. <b>cwatch</b> uses [chalk](https://www.npmjs.com/package/chalk) for the colors
+Open `config.json` to edit the colors of the table. <b>crwatch</b> uses [chalk](https://www.npmjs.com/package/chalk) for the colors
 
 
 ## Running
 
-`cwatch`
-`cwatch -w [timeout]` to auto-refresh the table every [timeout] interval (minimum 30)
-`cwatch c [coin]` to draw the chart of a [coin] specified
-`cwatch ping` to check the API status
+`crwatch`
+`crwatch -w [timeout]` to auto-refresh the table every [timeout] interval (minimum 30)
+`crwatch c [coin]` to draw the chart of a [coin] specified
+`crwatch ping` to check the API status
