@@ -18,7 +18,7 @@
     "readline": "^1.3.0"
   },
   "bin": {
-    "cwatch": "./src/index.js"
+    "crwatch": "./src/index.js"
   },
   "repository": {
     "type": "git",

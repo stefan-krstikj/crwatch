@@ -4,7 +4,7 @@
 `crwatch` is a customizable CLI tool for displaying live cryptocurrency prices and drawing charts. It has the ability to monitor and update the prices continously with a given timeout, and it is the only interactive cryptocurrency command line monitor app.
 
 <p align="center">
-  <img src="demo/crwatch.gif" alt="Demo of CRWatch">
+  <img src="https://github.com/stefan-krstikj/crwatch/blob/master/demo/crwatch.gif?raw=true" alt="Demo of CRWatch">
 </p>
 ## Install
 You can install <b>crwatch</b> using npm or you can clone the project and install it from the repository
