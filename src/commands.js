@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const CoinGecko = require('coingecko-api');
 const readline = require('readline');
-const { printTable, printChart, getTime, printTime } = require('./print');
+const {printTable, printChart, getTime, printTime} = require('./print');
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 
@@ -17,7 +17,7 @@ var coinsAll = (n, watch, activeCoin = 0) => {
         console.error("error: required option '-w, --watch [seconds]' needs to be greater than 30 seconds!")
         return
     }
-    getCoins().then(data => {
+    getCoins(n).then(data => {
         if (!_isResponseSuccess(data)) {
             console.log(data.data.error)
             return;
@@ -30,16 +30,15 @@ var coinsAll = (n, watch, activeCoin = 0) => {
             process.stdin.on('keypress', (str, key) => {
                 if (key.ctrl && key.name === 'c') {
                     process.exit();
-                }
-                else {
+                } else {
                     switch (key.name) {
                         case ('up'):
-                            activeCoin == 0 ? activeCoin : activeCoin--
+                            if (activeCoin !== 0) activeCoin--;
                             printTable(data.data, watch, activeCoin, timestamp, true)
                             return
 
                         case ('down'):
-                            ((n !== undefined && activeCoin == n - 1) || (n === undefined && activeCoin == 9)) ? activeCoin : activeCoin++
+                            if (!((n !== undefined && activeCoin === n - 1) || (n === undefined && activeCoin === 9))) activeCoin++;
                             printTable(data.data, watch, activeCoin, timestamp, true)
                             return
 
@@ -63,8 +62,7 @@ var coinsAll = (n, watch, activeCoin = 0) => {
                 coinsAll(n, watch, activeCoin)
             });
 
-        }
-        else {
+        } else {
             printTime()
             printTable(data.data, watch, activeCoin)
         }

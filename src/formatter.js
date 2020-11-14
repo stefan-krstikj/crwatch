@@ -3,7 +3,7 @@ var formatCurrency = function (number) {
 
     var tier = Math.log10(number) / 3 | 0;
 
-    if(tier == 0) return number;
+    if (tier === 0) return number;
 
     var suffix = SI_SYMBOL[tier];
     var scale = Math.pow(10, tier * 3);
